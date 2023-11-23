@@ -3,9 +3,12 @@ package com.sparta.newsfeed.user;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class LoginRequestDto {
+@Setter
+public class UserDTO {
     private String username;
-    private String password;
+
+    public UserDTO(User user) {
+        this.username = user.getUsername();
+    }
 }

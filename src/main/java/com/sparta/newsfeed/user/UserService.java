@@ -1,8 +1,6 @@
-package com.kdy9960.todoparty.user;
+package com.sparta.newsfeed.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +18,10 @@ public class UserService {
 
         if (userRepository.findByUsername(username).isPresent()) { // DB에 유저가 있는지 확인하기 위한 메서드 (유저정보위치, 실행메서드)
             throw new IllegalArgumentException("이미 존재하는 유저 입니다.");
-
         }
 
         User user = new User(username, password);
         userRepository.save(user);
-
     }
 
     public void login(UserRequestDto userRequestDto) {
@@ -34,6 +30,8 @@ public class UserService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new IllegalArgumentException("등록된 유저가 없습니다."));
+        System.out.println(password);
+        System.out.println(user.getPassword());
 
         if(!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");

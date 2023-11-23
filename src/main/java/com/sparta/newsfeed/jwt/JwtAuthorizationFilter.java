@@ -1,8 +1,8 @@
-package com.kdy9960.todoparty.jwt;
+package com.sparta.newsfeed.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdy9960.todoparty.CommonResponseDto;
-import com.kdy9960.todoparty.user.UserDetailsService;
+import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,12 +38,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Claims info = jwtUtil.getUserInformToken(token); // 토큰이 정상일 경우 유저정보를 가져와야하는데 Claims 정보 = 유저정보가 되게끔하여 메소드 getUserInformToken 를 만들어서 token에서 가져오도록 한다.
 
                 // 인증정보에 유저정보(username) 넣기
-                // username -> user 조회 -> userDetails 에 담고 -> authentication의 principal에 담고 (UsernamePasswordAuthenticationToken)
+                // username -> user 조회   (UsernamePasswordAuthenticationToken)
                 String username = info.getSubject();
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
+                // -> userDetails 에 담고
                 UserDetails userDetails = userDetailsService.getUserDetails(username);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
-
+                // -> authentication의 principal에 담고
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 // -> securityContext 에 담고
                 context.setAuthentication(authentication);
                 // -> SecurityContextHolder 에 담고
@@ -56,7 +57,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 응답값에 Status를 세팅하기위해 필요
                 response.setContentType("application/json; charset=UTF-8");// Body 부분이 깨지지 않게 하기위해서
                 response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto)); //
-
+                return;
             }
         }
 

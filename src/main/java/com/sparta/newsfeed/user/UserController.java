@@ -1,7 +1,7 @@
-package com.kdy9960.todoparty.user;
+package com.sparta.newsfeed.user;
 
-import com.kdy9960.todoparty.CommonResponseDto;
-import com.kdy9960.todoparty.jwt.JwtUtil;
+import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,12 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signup(@Valid @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<CommonResponseDto> signup(@Valid @RequestBody UserRequestDto userRequestDto) {
         try {
             userService.signup(userRequestDto);
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
         }
-
 
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
@@ -36,12 +35,12 @@ public class UserController {
     public ResponseEntity<CommonResponseDto> login(@RequestBody UserRequestDto userRequestDto, HttpServletResponse response) {
         try {
             userService.login(userRequestDto);
-        } catch (IllegalArgumentException exception) {
-            return ResponseEntity.badRequest().body(new CommonResponseDto(exception.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
+
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userRequestDto.getUsername()));
 
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
-
     }
 }

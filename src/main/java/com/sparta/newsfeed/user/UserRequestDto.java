@@ -1,4 +1,4 @@
-package com.kdy9960.todoparty.user;
+package com.sparta.newsfeed.user;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;

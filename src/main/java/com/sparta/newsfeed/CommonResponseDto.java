@@ -1,4 +1,4 @@
-package com.kdy9960.todoparty;
+package com.sparta.newsfeed;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

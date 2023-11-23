@@ -1,8 +1,9 @@
-package com.kdy9960.todoparty.user;
+package com.sparta.newsfeed.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 @Getter
 @Entity
 @NoArgsConstructor

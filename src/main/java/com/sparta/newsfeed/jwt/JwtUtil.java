@@ -1,4 +1,4 @@
-package com.kdy9960.todoparty.jwt;
+package com.sparta.newsfeed.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Slf4j
 @Component // Bean으로 사용할 수 있도록 설정
-
 public class JwtUtil {
 
     // Header KEY 값
@@ -24,7 +23,7 @@ public class JwtUtil {
     // Token 식별자
     public static final String BEARER_PREFIX = "Bearer "; // Bearer는 식별자로서 토큰앞에 붙여서 구분하는 역할
 
-    @Value("$(jwt.secret.key") // 우리만의 키값으로 만들수 있도록 roperties에 있는 secret.key 값을 주입
+    @Value("${jwt.secret.key}")// 우리만의 키값으로 만들수 있도록 roperties에 있는 secret.key 값을 주입
     private String secretKey;
 
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -43,7 +42,6 @@ public class JwtUtil {
             return bearerToken.substring(7); // 확인후 bearerToken 내용을 Bearer글자와 띄어쓰기포함 7글자 부터 지움
         }
         return null;
-
     }
 
     public boolean validateToken(String token) { //토큰을 검증하는 메소드, 토큰의 상태에따라 대답

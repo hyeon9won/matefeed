@@ -1,16 +1,14 @@
-package com.kdy9960.todoparty.configuration;
+package com.sparta.newsfeed.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdy9960.todoparty.jwt.JwtAuthorizationFilter;
-import com.kdy9960.todoparty.jwt.JwtUtil;
-import com.kdy9960.todoparty.user.UserDetailsService;
-import com.kdy9960.todoparty.user.UserService;
+import com.sparta.newsfeed.jwt.JwtAuthorizationFilter;
+import com.sparta.newsfeed.jwt.JwtUtil;
+import com.sparta.newsfeed.user.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,18 +19,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration // Bean을 주입해서 사용할것이기 때문에 @Configuration 주입
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
-    private final ObjectMapper objectMapper;
 
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
-    }
+    private final JwtUtil jwtUtil;
+
+    private final UserDetailsService userDetailsService;
+
+    private final ObjectMapper objectMapper;
 
     @Bean // UserService에서 사용되는 passwordEncoder는 기본설정으로 사용할수있지만 BCryptPasswordEncoder형식으로 사용하기위해서 Bean으로 작성
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
     }
 
     @Bean // 기존의 WebSecurityConfig설정을 컨트롤 할수있도록 추가한 Bean

@@ -1,4 +1,4 @@
-package com.kdy9960.todoparty;
+package com.sparta.newsfeed;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

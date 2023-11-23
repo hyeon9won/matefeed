@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service // 서비스로 운용할것이이기 @Service 어노테이션 주입
+@Transactional
 @RequiredArgsConstructor // 생성자가 없기때문에 주입해달라고 요청하는 어노테이션
 public class UserService {
     private final PasswordEncoder passwordEncoder; // password 암호화를 위해서 Spring Security의 기능중 하나인 PasswordEncoder 사용
@@ -41,10 +42,23 @@ public class UserService {
 
     @Transactional // 유저 조회
     public UserResponseDto getUserById(Long id) {
-        return new UserResponseDto(findUser(id));
+        return new UserResponseDto(getUser(id));
     }
 
-    private User findUser(Long id) { // id로 유저찾기 메서드
+    @Transactional
+    public UserResponseDto updateUser(UpdateRequestDto updateRequestDto, UserDetailsImpl userDetails) {
+        User user = getUser(updateRequestDto.getId());
+
+        user.setUsername(updateRequestDto.getUsername());
+
+        return new UserResponseDto(user);
+    }
+
+
+
+
+
+    private User getUser(Long id) { // id로 유저찾기 메서드
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
     }

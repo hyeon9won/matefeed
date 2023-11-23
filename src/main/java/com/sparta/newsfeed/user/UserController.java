@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/users")
@@ -41,9 +42,14 @@ public class UserController {
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // id로 유저 조회
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.getUserById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateRequestDto updateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok().body(userService.updateUser(updateRequestDto, userDetails));
     }
 
 

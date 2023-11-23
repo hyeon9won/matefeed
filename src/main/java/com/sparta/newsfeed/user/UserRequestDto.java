@@ -12,5 +12,7 @@ public class UserRequestDto { // signup, 회원가입시 2개의 정보를 받�
 
     @Pattern(regexp = "^[a-zA-Z0-9]{8,15}")
     private String password;
+
+    public String team;
 }
 

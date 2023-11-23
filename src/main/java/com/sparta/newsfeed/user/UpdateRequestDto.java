@@ -8,4 +8,5 @@ import lombok.Setter;
 public class UpdateRequestDto {
     private Long id;
     private String username;
+    private String team;
 }

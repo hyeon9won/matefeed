@@ -17,12 +17,13 @@ public class UserService {
     public void signup(UserRequestDto userRequestDto) { // 회원가입 메서드로 signup 으로 이름 정한후 그에 관해 자료를 저장할 공간을 선정
         String username = userRequestDto.getUsername(); // Service로 userRequestDto안에 있는 Username 가져오기
         String password = passwordEncoder.encode(userRequestDto.getPassword());
+        String team = userRequestDto.getTeam();
 
         if (userRepository.findByUsername(username).isPresent()) { // DB에 유저가 있는지 확인하기 위한 메서드 (유저정보위치, 실행메서드)
             throw new IllegalArgumentException("이미 존재하는 유저 입니다.");
         }
 
-        User user = new User(username, password);
+        User user = new User(username, password, team);
         userRepository.save(user);
     }
 
@@ -50,6 +51,7 @@ public class UserService {
         User user = getUser(updateRequestDto.getId());
 
         user.setUsername(updateRequestDto.getUsername());
+        user.setTeam(updateRequestDto.getTeam());
 
         return new UserResponseDto(user);
     }

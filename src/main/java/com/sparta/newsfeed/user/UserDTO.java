@@ -7,8 +7,10 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
     private String username;
+    private String team;
 
     public UserDTO(User user) {
         this.username = user.getUsername();
+        this.team = user.getTeam();
     }
 }

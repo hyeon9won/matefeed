@@ -8,5 +8,7 @@ import lombok.Setter;
 public class UpdateRequestDto {
     private Long id;
     private String username;
+    private String password;
+    private String newPassword;
     private String team;
 }

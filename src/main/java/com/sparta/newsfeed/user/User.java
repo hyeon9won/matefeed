@@ -37,4 +37,8 @@ public class User {
     public void setTeam(String team) {
         this.team = team;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

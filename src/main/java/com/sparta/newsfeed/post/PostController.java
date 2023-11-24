@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/feed")
+@RequestMapping("/api/feed")
 
 public class PostController {
 

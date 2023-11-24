@@ -28,7 +28,7 @@ public class PostEntity extends TimeEntity {
         this.category = requestDto.getCategory();
         this.title = requestDto.getTitle();
         this.author = requestDto.getAuthor();
-        this.password = requestDto.getPassword(); // 암호화 생략
+        this.password = requestDto.getPassword(); // 암호화 생략된 상태임
         this.contents = requestDto.getContent();
     }
 

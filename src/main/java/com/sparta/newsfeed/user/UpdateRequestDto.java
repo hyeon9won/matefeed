@@ -5,12 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDTO {
+public class UpdateRequestDto {
+    private Long id;
     private String username;
+    private String password;
+    private String newPassword;
     private String team;
-
-    public UserDTO(User user) {
-        this.username = user.getUsername();
-        this.team = user.getTeam();
-    }
 }

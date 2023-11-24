@@ -2,6 +2,7 @@ package com.sparta.newsfeed.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.user.UserDetailsImpl;
 import com.sparta.newsfeed.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -42,7 +43,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String username = info.getSubject();
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 // -> userDetails 에 담고
-                UserDetails userDetails = userDetailsService.getUserDetails(username);
+                UserDetailsImpl userDetails = userDetailsService.getUserDetails(username);
                 // -> authentication의 principal에 담고
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 // -> securityContext 에 담고
@@ -62,7 +63,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response); // 로그인처리 완료시 filterChanim에서 doFilter로 넘어갈수있도록 처리
-
-
     }
+
 }

@@ -3,16 +3,14 @@ package com.sparta.newsfeed.user;
 import com.sparta.newsfeed.CommonResponseDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/feed")
+@RequestMapping("/api/users")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -27,8 +25,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED.value())
-                .body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
+        return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
 
     @PostMapping("/login")
@@ -42,5 +39,12 @@ public class UserController {
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(userRequestDto.getUsername()));
 
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<CommonResponseDto> logout(@RequestBody HttpSession session) {
+        userService.logout(session);
+
+        return ResponseEntity.ok().body(new CommonResponseDto("로그아웃 되었습니다.", HttpStatus.OK.value()));
     }
 }

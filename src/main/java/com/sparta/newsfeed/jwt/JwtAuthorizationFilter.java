@@ -32,7 +32,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);// 토큰을 가져오기위해서 JwtUtil 필요하며 bearer글자가 잘린 정보를 받아옴
-
+        System.out.println(token);
         if(Objects.nonNull(token)) { // 토큰이 null여부 확인
             if(jwtUtil.validateToken(token)) { // 토큰을 실제 검증을 할 메소드 validateToken(token) 주입, 토큰이 들어왔을때 Exception 상황이 일어나지 않으면 정상적으로 작동
                 Claims info = jwtUtil.getUserInformToken(token); // 토큰이 정상일 경우 유저정보를 가져와야하는데 Claims 정보 = 유저정보가 되게끔하여 메소드 getUserInformToken 를 만들어서 token에서 가져오도록 한다.

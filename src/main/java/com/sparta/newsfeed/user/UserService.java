@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.user;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,8 @@ public class UserService {
         }
     }
 
+
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
 }

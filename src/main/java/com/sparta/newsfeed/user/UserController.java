@@ -48,8 +48,9 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateRequestDto updateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.ok().body(userService.updateUser(updateRequestDto, userDetails));
+    public ResponseEntity<CommonResponseDto> updateUser(@RequestBody UpdateRequestDto updateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.updateUser(updateRequestDto,  userDetails);
+        return ResponseEntity.ok().body(new CommonResponseDto("프로필 수정 성공", HttpStatus.OK.value()));
     }
 
 

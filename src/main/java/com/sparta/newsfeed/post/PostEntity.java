@@ -13,6 +13,7 @@ public class PostEntity extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String category;
     @Column(nullable = false, length = 20)
     private String title;
     @Column(nullable = false, length = 15)
@@ -23,6 +24,8 @@ public class PostEntity extends TimeEntity {
     private String contents;
 
     public PostEntity(PostAddRequestDto requestDto) {
+        this.id = requestDto.getId();
+        this.category = requestDto.getCategory();
         this.title = requestDto.getTitle();
         this.author = requestDto.getAuthor();
         this.password = requestDto.getPassword(); // 암호화 생략

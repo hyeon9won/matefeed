@@ -14,6 +14,8 @@ public class PostController {
 
     private final PostService postService;
 
+    private final PostRepository postRepository;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostResponseDto addPost(
@@ -42,6 +44,11 @@ public class PostController {
             @RequestBody PostUpdateRequestDto requestDto
     ) {
         return postService.updatePost(postId, requestDto);
+    }
+
+    @GetMapping("/{category}")
+    public List<PostEntity> getFeedByCategory(@PathVariable String category) {
+        return postRepository.findByCategory(category);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

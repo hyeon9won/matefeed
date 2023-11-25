@@ -9,14 +9,14 @@ public class PostResponseDto {
 
     private Long id;
     private String title;
-    private String author;
+    private String username;
     private String content;
     LocalDateTime createdAt;
 
     public PostResponseDto(PostEntity savePost) {
         this.id = savePost.getId();
         this.title = savePost.getTitle();
-        this.author = savePost.getAuthor();
+        this.username = savePost.getUsername();
         this.content = savePost.getContents();
         this.createdAt = savePost.getCreatedAt();
     }

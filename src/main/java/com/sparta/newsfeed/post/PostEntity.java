@@ -13,11 +13,11 @@ public class PostEntity extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String category;
+    private String team;
     @Column(nullable = false, length = 20)
     private String title;
     @Column(nullable = false, length = 15)
-    private String author;
+    private String username;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false, length = 500)
@@ -25,16 +25,17 @@ public class PostEntity extends TimeEntity {
 
     public PostEntity(PostAddRequestDto requestDto) {
         this.id = requestDto.getId();
-        this.category = requestDto.getCategory();
+        this.team = requestDto.getTeam();
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
-        this.password = requestDto.getPassword(); // 암호화 생략된 상태임
+        this.username = requestDto.getUsername();
+        this.password = requestDto.getPassword();
         this.contents = requestDto.getContent();
     }
 
     public void update(PostUpdateRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.author = requestDto.getAuthor();
+        this.team = requestDto.getTeam();
+        this.username = requestDto.getUsername();
         this.contents = requestDto.getContent();
     }
 

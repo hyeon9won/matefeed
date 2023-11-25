@@ -9,7 +9,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/feed")
-
 public class PostController {
 
     private final PostService postService;
@@ -46,9 +45,9 @@ public class PostController {
         return postService.updatePost(postId, requestDto);
     }
 
-    @GetMapping("/{category}")
-    public List<PostEntity> getFeedByCategory(@PathVariable String category) {
-        return postRepository.findByCategory(category);
+    @GetMapping("/{team}")
+    public List<PostEntity> getFeedByTeam(@PathVariable String team) {
+        return postRepository.findByTeam(team);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

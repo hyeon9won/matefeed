@@ -4,8 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class PostUpdateRequestDto {
+    private Long id;
     private String title;
-    private String author;
+    private String team;
+    private String username;
     private String password;
     private String content;
 }

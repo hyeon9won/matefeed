@@ -5,6 +5,7 @@ import com.sparta.newsfeed.jwt.JwtAuthorizationFilter;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import com.sparta.newsfeed.user.UserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +32,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/users/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        .requestMatchers(HttpMethod.GET,"/api/posts/**").permitAll() // 'Get/api/posts'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers(HttpMethod.GET,"/api/feed/**").permitAll() // 'Get/api/feed'로 시작하는 요청 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NewsfeedApplication {
+public class TodopartyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NewsfeedApplication.class, args);
+		SpringApplication.run(TodopartyApplication.class, args);
 	}
 
 }

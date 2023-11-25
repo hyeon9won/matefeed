@@ -60,10 +60,6 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
-
-
-
-
     private User getUser(Long id) { // id로 유저찾기 메서드
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));

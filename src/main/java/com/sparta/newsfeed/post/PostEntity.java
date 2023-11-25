@@ -24,19 +24,17 @@ public class PostEntity extends TimeEntity {
     private String contents;
 
     public PostEntity(PostAddRequestDto requestDto) {
-        this.id = requestDto.getId();
         this.team = requestDto.getTeam();
         this.title = requestDto.getTitle();
         this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
-        this.contents = requestDto.getContent();
+        this.contents = requestDto.getContents();
     }
 
     public void update(PostUpdateRequestDto requestDto) {
-        this.title = requestDto.getTitle();
         this.team = requestDto.getTeam();
+        this.title = requestDto.getTitle();
         this.username = requestDto.getUsername();
-        this.contents = requestDto.getContent();
+        this.contents = requestDto.getContents();
     }
 
     public boolean passwordMatches(String inputPassword) {

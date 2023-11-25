@@ -9,6 +9,6 @@ public class PostAddRequestDto {
     private String title;
     private String username;
     private String password;
-    private String content;
+    private String contents;
 }
 

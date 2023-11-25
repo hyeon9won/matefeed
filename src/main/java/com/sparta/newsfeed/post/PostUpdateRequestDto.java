@@ -9,5 +9,5 @@ public class PostUpdateRequestDto {
     private String team;
     private String username;
     private String password;
-    private String content;
+    private String contents;
 }

@@ -37,17 +37,19 @@ public class PostController {
 
     }
 
+    @GetMapping("/{team}")
+    public List<PostEntity> getFeedByTeam(
+            @PathVariable String team
+    ) {
+        return postRepository.findByTeam(team);
+    }
+
     @PatchMapping("/{postId}")
     public PostResponseDto updatePost(
             @PathVariable Long postId,
             @RequestBody PostUpdateRequestDto requestDto
     ) {
         return postService.updatePost(postId, requestDto);
-    }
-
-    @GetMapping("/{team}")
-    public List<PostEntity> getFeedByTeam(@PathVariable String team) {
-        return postRepository.findByTeam(team);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

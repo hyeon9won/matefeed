@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final JwtUtil jwtUtil;
+//    private final JwtUtil jwtUtil;
 
     private final UserDetailsService userDetailsService;
 
@@ -32,10 +32,10 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
-    }
+//    @Bean
+//    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+//        return new JwtAuthorizationFilter(jwtUtil, userDetailsService, objectMapper);
+//    }
 
     @Bean // 기존의 WebSecurityConfig설정을 컨트롤 할수있도록 추가한 Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,7 +56,7 @@ public class WebSecurityConfig {
         );
 
         // 필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

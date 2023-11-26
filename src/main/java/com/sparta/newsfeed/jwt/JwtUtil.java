@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     public Claims getUserInformToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody(); // 토큰 동일시 확인 과정을 거친후 Claims라는곳에 담겨있는 토큰의 Body부분을 가져온다.
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody(); // 토큰 동일시 확인 과정을 거친후 Claims라는곳에 담겨있는 토큰의 Body부분을 가져온다.
 
     }
 

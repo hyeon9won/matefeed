@@ -1,7 +1,7 @@
 package com.sparta.newsfeed.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
 import com.sparta.newsfeed.user.UserDetailsImpl;
 import com.sparta.newsfeed.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
@@ -16,9 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -30,8 +28,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);// 토큰을 가져오기위해서 JwtUtil 필요하며 bearer글자가 잘린 정보를 받아옴
 
         if(Objects.nonNull(token)) { // 토큰이 null여부 확인

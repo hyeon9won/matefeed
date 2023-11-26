@@ -1,4 +1,4 @@
-package com.sparta.newsfeed;
+package com.sparta.newsfeed.responseDto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

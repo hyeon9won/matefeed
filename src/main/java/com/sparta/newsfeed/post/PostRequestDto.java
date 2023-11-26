@@ -1,11 +1,12 @@
 package com.sparta.newsfeed.post;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class PostUpdateRequestDto {
+@Setter
+public class PostRequestDto {
+    private String team;
     private String title;
-    private String author;
-    private String password;
     private String content;
 }

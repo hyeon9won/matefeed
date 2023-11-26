@@ -8,7 +8,5 @@ import lombok.Setter;
 public class PostRequestDto {
     private String team;
     private String title;
-    private String username;
-    private String password;
     private String content;
 }

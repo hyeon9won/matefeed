@@ -12,7 +12,7 @@ public class PostListResponseDto {
     private UserDTO user;
     private List<PostResponseDto> postList;
 
-    public PostListResponseDto(UserDTO userDTO, List<PostResponseDto> postList) {
+    public PostListResponseDto(UserDTO user, List<PostResponseDto> postList) {
         this.user = user;
         this.postList = postList;
     }

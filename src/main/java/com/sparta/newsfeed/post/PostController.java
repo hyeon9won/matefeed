@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponseDto> getPost(
+    public ResponseEntity<PostResponseDto> createPost(
             @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         PostResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());
@@ -32,7 +32,7 @@ public class PostController {
     @GetMapping("/{postId}")
     public ResponseEntity<CommonResponseDto> getPost(@PathVariable Long postId) {
         try {
-            PostResponseDto responseDto = postService.getPost(postId);
+            PostResponseDto responseDto = postService.getPostDto(postId);
             return ResponseEntity.ok().body(responseDto);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));

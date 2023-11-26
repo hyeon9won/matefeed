@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Post extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,9 @@ public class Post extends TimeEntity {
     private Boolean isCompleted;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name="user_id")
     private User user;
+
 
     public Post(PostRequestDto requestDto) {
         this.team = requestDto.getTeam();
@@ -49,6 +50,11 @@ public class Post extends TimeEntity {
     }
 
     // 서비스 메서드
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

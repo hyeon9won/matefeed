@@ -26,11 +26,11 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
-    public PostResponseDto getPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID입니다."));
+    public PostResponseDto getPostDto(Long postId) {
+        Post post = getPost(postId);
         return new PostResponseDto(post);
     }
+
 
     public Map<UserDTO, List<PostResponseDto>> getUserPostMap() {
         Map<UserDTO, List<PostResponseDto>> userPostMap = new HashMap<>();
@@ -51,18 +51,29 @@ public class PostService {
 
     @Transactional
     public PostResponseDto updatePost(Long postId, PostRequestDto requestDto, User user) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID입니다."));
+        Post post = getUserPost(postId, user);
 
-        if (!user.getId().equals(post.getUser().getId())) {
-            throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
-        }
-
+        post.setTeam(requestDto.getTeam());
         post.setTitle(requestDto.getTitle());
         post.setContent(requestDto.getContent());
 
         return new PostResponseDto(post);
     }
+
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID입니다."));
+
+    }
+
+    public Post getUserPost(Long postId, User user) {
+        Post post = getPost(postId);
+        if(!user.getId().equals(post.getUser().getId())) {
+            throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
+        }
+        return post;
+    }
+
 
     public void deletePost(Long postId, User user) {
         // postId와 사용자 정보를 기반으로 게시물을 삭제

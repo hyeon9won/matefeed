@@ -1,6 +1,6 @@
 package com.sparta.newsfeed.user;
 
-import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

@@ -2,10 +2,5 @@ package com.sparta.newsfeed.post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface PostRepository extends JpaRepository<PostEntity, Long> {
-    List<PostEntity> findAllByOrderByCreatedAtDesc();
-    List<PostEntity> findByTeam(String team);
+public interface PostRepository extends JpaRepository<Post, Long> {
 }
-

@@ -1,25 +1,29 @@
 package com.sparta.newsfeed.post;
 
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
+import com.sparta.newsfeed.user.UserDTO;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PostResponseDto {
+@Setter
+public class PostResponseDto extends CommonResponseDto {
+
     private Long id;
     private String team;
     private String title;
-    private String username;
-    private String contents;
-    LocalDateTime createdAt;
+    private String content;
+    private UserDTO user;
+    private LocalDateTime createdAt;
 
-    public PostResponseDto(PostEntity savePost) {
-        this.id = savePost.getId();
-        this.team = savePost.getTeam();
-        this.title = savePost.getTitle();
-        this.username = savePost.getUsername();
-        this.contents = savePost.getContents();
-        this.createdAt = savePost.getCreatedAt();
+    public PostResponseDto(Post post) {
+        this.id = post.getId();
+        this.team = post.getTeam();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.user    = new UserDTO(post.getUser());
+        this.createdAt = post.getCreatedAt();
     }
 }
-

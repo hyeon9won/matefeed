@@ -1,43 +1,59 @@
 package com.sparta.newsfeed.post;
 
+import com.sparta.newsfeed.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
-@Table(name = "post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostEntity extends TimeEntity {
+public class Post extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String team;
+
     @Column(nullable = false, length = 20)
     private String title;
-    @Column(nullable = false, length = 15)
-    private String username;
-    @Column(nullable = false)
-    private String password;
+
     @Column(nullable = false, length = 500)
-    private String contents;
+    private String content;
 
-    public PostEntity(PostAddRequestDto requestDto) {
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private Boolean isCompleted;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Post(PostRequestDto requestDto) {
         this.team = requestDto.getTeam();
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
-        this.contents = requestDto.getContents();
+        this.content = requestDto.getContent();
+        this.createdAt =LocalDateTime.now();
+        this.isCompleted = false;
     }
 
-    public void update(PostUpdateRequestDto requestDto) {
-        this.team = requestDto.getTeam();
-        this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
-        this.contents = requestDto.getContents();
+    // 연관관계 메서드
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public boolean passwordMatches(String inputPassword) {
-        return this.password.equals(inputPassword);
+    // 서비스 메서드
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

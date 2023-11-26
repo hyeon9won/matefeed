@@ -1,5 +1,6 @@
 package com.sparta.newsfeed.post;
 
+import com.sparta.newsfeed.comment.Comment;
 import com.sparta.newsfeed.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -32,15 +34,17 @@ public class Post extends TimeEntity {
     private Boolean isCompleted;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
     public Post(PostRequestDto requestDto) {
         this.team = requestDto.getTeam();
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.createdAt =LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
         this.isCompleted = false;
     }
 
@@ -62,4 +66,9 @@ public class Post extends TimeEntity {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void complete() {
+        this.isCompleted = true;
+    }
+
 }

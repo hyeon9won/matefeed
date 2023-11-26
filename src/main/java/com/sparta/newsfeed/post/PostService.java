@@ -20,7 +20,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
-        Post post = new Post(requestDto);
+        Post post = new Post    (requestDto);
         post.setUser(user);
         postRepository.save(post);
         return new PostResponseDto(post);
@@ -60,9 +60,18 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+ /*   @Transactional
+    public PostResponseDto completePost(Long postId, User user) {
+        Post post = getUserPost(postId, user);
+
+        post.complete();
+        return  new PostResponseDto(post);
+    } */
+
+
     public Post getPost(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
 
     }
 
@@ -76,12 +85,11 @@ public class PostService {
 
 
     public void deletePost(Long postId, User user) {
-        // postId와 사용자 정보를 기반으로 게시물을 삭제
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
 
         if (!post.getUser().equals(user)) {
-            throw new IllegalArgumentException("게시물을 삭제할 권한이 없습니다.");
+            throw new IllegalArgumentException("게시물 삭제 권한이 없습니다.");
         }
 
         postRepository.delete(post);

@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostResponseDto> createPost(
+    public ResponseEntity<PostResponseDto> writePost(
             @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         PostResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());

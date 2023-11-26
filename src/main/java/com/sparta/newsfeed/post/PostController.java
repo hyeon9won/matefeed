@@ -1,62 +1,74 @@
 package com.sparta.newsfeed.post;
 
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
+import com.sparta.newsfeed.user.UserDTO;
+import com.sparta.newsfeed.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/feed")
-
+@RequestMapping("/api/feed")
 public class PostController {
 
     private final PostService postService;
 
-    private final PostRepository postRepository;
-
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public PostResponseDto addPost(
-            @RequestBody PostAddRequestDto requestDto
+    public ResponseEntity<PostResponseDto> getPost(
+            @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        PostResponseDto responseDto = postService.addPost(requestDto);
-        return responseDto;
+        PostResponseDto responseDto = postService.createPost(requestDto, userDetails.getUser());
+        return ResponseEntity.status(201).body(responseDto);
     }
 
+    // 단건 조회
     @GetMapping("/{postId}")
-    public PostResponseDto getPost(
-            @PathVariable Long postId
-    ) {
-        return postService.getPost(postId);
+    public ResponseEntity<CommonResponseDto> getPost(@PathVariable Long postId) {
+        try {
+            PostResponseDto responseDto = postService.getPost(postId);
+            return ResponseEntity.ok().body(responseDto);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
     }
 
+    // 목록 조회
     @GetMapping
-    public List<PostResponseDto> getPosts() {
-        return postService.getPost();
+    public ResponseEntity<List<PostListResponseDto>> getPostList() {
+        List<PostListResponseDto> response = new ArrayList<>();
 
+        Map<UserDTO, List<PostResponseDto>> responseDtoMap = postService.getUserPostMap();
+
+        responseDtoMap.forEach((key, value) -> response.add(new PostListResponseDto(key, value)));
+
+        return ResponseEntity.ok().body(response);
     }
 
-    @PatchMapping("/{postId}")
-    public PostResponseDto updatePost(
-            @PathVariable Long postId,
-            @RequestBody PostUpdateRequestDto requestDto
-    ) {
-        return postService.updatePost(postId, requestDto);
+    @PutMapping("/{postId}")
+    public ResponseEntity<CommonResponseDto> putPost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.updatePost(postId, requestDto, userDetails.getUser());
+            return ResponseEntity.ok().body(new CommonResponseDto("게시물이 수정되었습니다.", HttpStatus.OK.value()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
     }
 
-    @GetMapping("/{category}")
-    public List<PostEntity> getFeedByCategory(@PathVariable String category) {
-        return postRepository.findByCategory(category);
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{postId}")
-    public void deletePost(
-            @PathVariable Long postId,
-            @RequestHeader("password") String password
-    ) {
-        postService.deletePost(postId, password);
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.deletePost(postId, userDetails.getUser());
+            return ResponseEntity.ok().body(new CommonResponseDto("게시물이 삭제되었습니다.", HttpStatus.OK.value()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
     }
+
 }

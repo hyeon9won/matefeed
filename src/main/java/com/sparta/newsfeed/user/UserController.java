@@ -1,6 +1,6 @@
 package com.sparta.newsfeed.user;
 
-import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
 @RestController
 @RequiredArgsConstructor
 public class UserController {

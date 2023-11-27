@@ -60,7 +60,7 @@ public class UserService {
 
         if (!updateRequestDto.getNewPassword().equals(updateRequestDto.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }user.setPassword(updateRequestDto.getPassword());
+        }user.setPassword(passwordEncoder.encode(updateRequestDto.getPassword()));
 
         return new UserResponseDto(user);
     }

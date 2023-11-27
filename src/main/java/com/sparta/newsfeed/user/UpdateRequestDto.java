@@ -9,6 +9,6 @@ public class UpdateRequestDto {
     private Long id;
     private String username;
     private String password;
-    private String newPassword;
+    private String checkPassword; // password와 일치하는지 확인
     private String team;
 }

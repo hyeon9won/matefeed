@@ -2,6 +2,7 @@ package com.sparta.newsfeed.user;
 
 import com.sparta.newsfeed.CommonResponseDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -42,9 +43,10 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<CommonResponseDto> logout(@RequestBody HttpSession session) {
-        userService.logout(session);
+    public ResponseEntity<Void> logout(HttpServletRequest servletRequest) {
 
-        return ResponseEntity.ok().body(new CommonResponseDto("로그아웃 되었습니다.", HttpStatus.OK.value()));
+        userService.logout();
+
+        return ResponseEntity.ok().build();
     }
 }

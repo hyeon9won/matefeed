@@ -2,6 +2,9 @@ package com.sparta.newsfeed.user;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final PasswordEncoder passwordEncoder; // password 암호화를 위해서 Spring Security의 기능중 하나인 PasswordEncoder 사용
     private final UserRepository userRepository;
+    private RedisTemplate<String, String> redisTemplate;
 
 
     public void signup(UserRequestDto userRequestDto) { // 회원가입 메서드로 signup 으로 이름 정한후 그에 관해 자료를 저장할 공간을 선정
@@ -40,7 +44,10 @@ public class UserService {
     }
 
 
-    public void logout(HttpSession session) {
-        session.invalidate();
+    public void logout() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (redisTemplate.opsForValue().get("JWT_TOKEN:" + userDetails.getUsername()) != null) {
+            redisTemplate.delete("JWT_TOKEN:" + userDetails.getUsername()); //Token 삭제
+        }
     }
 }

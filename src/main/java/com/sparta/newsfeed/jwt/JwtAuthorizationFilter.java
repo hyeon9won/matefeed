@@ -1,7 +1,8 @@
 package com.sparta.newsfeed.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
+import com.sparta.newsfeed.user.UserDetailsImpl;
 import com.sparta.newsfeed.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -15,9 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -29,12 +28,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
-
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         String token = jwtUtil.resolveToken(request);// 토큰을 가져오기위해서 JwtUtil 필요하며 bearer글자가 잘린 정보를 받아옴
-
-        System.out.println(token);
 
         if(Objects.nonNull(token)) { // 토큰이 null여부 확인
             if(jwtUtil.validateToken(token)) { // 토큰을 실제 검증을 할 메소드 validateToken(token) 주입, 토큰이 들어왔을때 Exception 상황이 일어나지 않으면 정상적으로 작동
@@ -45,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 String username = info.getSubject();
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 // -> userDetails 에 담고
-                UserDetails userDetails = userDetailsService.getUserDetails(username);
+                UserDetailsImpl userDetails = userDetailsService.getUserDetails(username);
                 // -> authentication의 principal에 담고
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 // -> securityContext 에 담고
@@ -65,7 +64,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response); // 로그인처리 완료시 filterChanim에서 doFilter로 넘어갈수있도록 처리
-
-
     }
+
 }

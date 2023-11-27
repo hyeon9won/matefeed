@@ -1,14 +1,14 @@
 package com.sparta.newsfeed.user;
 
-import com.sparta.newsfeed.CommonResponseDto;
+import com.sparta.newsfeed.responseDto.CommonResponseDto;
 import com.sparta.newsfeed.jwt.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/users")
@@ -26,7 +26,8 @@ public class UserController {
             return ResponseEntity.badRequest().body(new CommonResponseDto("중복된 username 입니다.", HttpStatus.BAD_REQUEST.value()));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
+        return ResponseEntity.status(HttpStatus.CREATED.value())
+                .body(new CommonResponseDto("회원가입 성공", HttpStatus.CREATED.value()));
     }
 
     @PostMapping("/login")
@@ -41,6 +42,20 @@ public class UserController {
 
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
     }
+
+    @GetMapping("/{id}") // id로 유저 조회
+    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.getUserById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<CommonResponseDto> updateUser(@RequestBody UpdateRequestDto updateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.updateUser(updateRequestDto,  userDetails);
+        return ResponseEntity.ok().body(new CommonResponseDto("프로필 수정 성공", HttpStatus.OK.value()));
+    }
+
+
+
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest servletRequest) {

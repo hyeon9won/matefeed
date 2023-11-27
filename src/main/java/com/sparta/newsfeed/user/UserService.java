@@ -58,7 +58,7 @@ public class UserService {
         user.setUsername(updateRequestDto.getUsername());
         user.setTeam(updateRequestDto.getTeam());
 
-        if (!updateRequestDto.getNewPassword().equals(updateRequestDto.getPassword())){
+        if (!updateRequestDto.getCheckPassword().equals(updateRequestDto.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }user.setPassword(passwordEncoder.encode(updateRequestDto.getPassword()));
 

@@ -1,12 +1,20 @@
 package com.sparta.newsfeed.comment;
 
 import com.sparta.newsfeed.post.Post;
+import com.sparta.newsfeed.post.PostResponseDto;
 import com.sparta.newsfeed.post.PostService;
+import com.sparta.newsfeed.responseDto.ResponseDto;
 import com.sparta.newsfeed.user.User;
+import com.sparta.newsfeed.user.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
@@ -50,5 +58,22 @@ public class CommentService {
             throw new RejectedExecutionException("작성자만 수정할 수 있습니다.");
         }
         return comment;
+    }
+
+    public Map<UserDTO, List<CommentResponseDto>> getUserCommentMap() {
+        Map<UserDTO, List<CommentResponseDto>> userCommentMap = new HashMap<>();
+
+        List<Comment> commentList = commentRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        commentList.forEach(comment -> {
+            var userDto = new UserDTO(comment.getUser());
+            var commentDto = new CommentResponseDto(comment);
+            if (userCommentMap.containsKey(userDto)) {
+                userCommentMap.get(userDto).add(commentDto);
+            } else {
+                userCommentMap.put(userDto, new ArrayList<>(List.of(commentDto)));
+            }
+        });
+        return userCommentMap;
     }
 }

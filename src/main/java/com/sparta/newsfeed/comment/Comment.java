@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment {
+public class Comment { //post와 연관관계를 맺어야함
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
